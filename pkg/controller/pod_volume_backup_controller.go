@@ -271,7 +271,7 @@ func (c *podVolumeBackupController) processBackup(req *velerov1api.PodVolumeBack
 		}
 		resticCmd.Env = env
 	} else if strings.HasPrefix(req.Spec.RepoIdentifier, "oss") {
-		if env, err = restic.AlibabaCloudCmdEnv(c.backupLocationLister, req.Namespace, req.Spec.BackupStorageLocation); err != nil {
+		if env, err = restic.AlibabaCloudCmdEnv(c.kbClient, req.Namespace, req.Spec.BackupStorageLocation); err != nil {
 			return c.fail(req, errors.Wrap(err, "error setting restic cmd env").Error(), log)
 		}
 		resticCmd.Env = env

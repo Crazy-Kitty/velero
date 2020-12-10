@@ -274,11 +274,8 @@ func (rm *repositoryManager) exec(cmd *Command, backupLocation string) error {
 		}
 		cmd.Env = env
 	} else if strings.HasPrefix(cmd.RepoIdentifier, "oss") {
-		if !cache.WaitForCacheSync(rm.ctx.Done(), rm.backupLocationInformerSynced) {
-			return errors.New("timed out waiting for cache to sync")
-		}
 
-		env, err := AlibabaCloudCmdEnv(rm.backupLocationLister, rm.namespace, backupLocation)
+		env, err := AlibabaCloudCmdEnv(rm.kbClient, rm.namespace, backupLocation)
 		if err != nil {
 			return err
 		}
